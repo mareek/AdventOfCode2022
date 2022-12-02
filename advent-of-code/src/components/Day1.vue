@@ -1,6 +1,6 @@
 <script setup lang="ts">
-import { computed, onMounted, ref } from 'vue';
-import _ from 'lodash';
+import { computed, onMounted, ref } from "vue";
+import _ from "lodash";
 
 async function GetInput(): Promise<string[]> {
     const response = await fetch("day1/input.txt");
@@ -8,9 +8,9 @@ async function GetInput(): Promise<string[]> {
     return result.split("\n");
 }
 
+const input = ref<string[]>();
 onMounted(async () => input.value = await GetInput());
 
-const input = ref<string[]>();
 const calByElf = computed<number[]>(() => {
     if (!(input.value && input.value.length))
         return [];
@@ -37,5 +37,5 @@ const threeMostCal = computed(() => {
 </script>
 
 <template>
-    <span>Day 1 - Part 1: {{ mostCal }} | Part 2 {{ threeMostCal }}</span>
+    <span>Day 1 - Part 1: {{ mostCal }} | Part 2: {{ threeMostCal }}</span>
 </template>
