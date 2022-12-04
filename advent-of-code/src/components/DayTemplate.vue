@@ -14,11 +14,23 @@ const input = ref<string[]>();
 onMounted(async () => input.value = await GetInput());
 
 const part1 = computed(() => {
-    return 0;
+    if (!input.value)
+        return 0;
+
+    return _.chain(input.value)
+        .map(l => 0)
+        .sum()
+        .value();
 });
 
 const part2 = computed(() => {
-    return 0;
+    if (!input.value)
+        return 0;
+
+    return _.chain(input.value)
+        .map(l => 0)
+        .sum()
+        .value();
 });
 
 </script>
