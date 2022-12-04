@@ -7,7 +7,7 @@ const day = 0;
 async function GetInput(): Promise<string[]> {
     const response = await fetch(`day${day}/input.txt`);
     const result = await response.text();
-    return result.split("\n");
+    return result.split("\n").filter(l => !!l.length);
 }
 
 const input = ref<string[]>();

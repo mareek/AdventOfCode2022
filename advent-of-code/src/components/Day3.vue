@@ -7,7 +7,7 @@ const day = 3;
 async function GetInput(): Promise<string[]> {
     const response = await fetch(`day${day}/input.txt`);
     const result = await response.text();
-    return result.split("\n");
+    return result.split("\n").filter(l => !!l.length);
 }
 
 const input = ref<string[]>();
@@ -55,8 +55,41 @@ const part1 = computed(() => {
         .value();
 });
 
+const allItemTypes = computed(() => {
+    const result: string[] = [];
+    for (let i = 0; i < 26; i++) {
+        result.push(String.fromCharCode(65 + i));
+        result.push(String.fromCharCode(97 + i));
+    }
+    return result;
+});
+
+function getGroupBadge(rucksacks: string[]): string {
+    return allItemTypes.value.filter(itemType => _.every(rucksacks, r => r.includes(itemType)))[0]
+}
+
+const groups = computed(() => {
+    if (!input.value)
+        return [];
+
+    const allRucksacks = input.value;
+    const result: string[][] = [];
+    for (let i = 0; i < allRucksacks.length; i += 3) {
+        result.push(allRucksacks.slice(i, i + 3))
+    }
+
+    return result;
+});
+
 const part2 = computed(() => {
-    return 0;
+    if (!input.value)
+        return 0;
+
+    return _.chain(groups.value)
+        .map(getGroupBadge)
+        .map(getPriority)
+        .sum()
+        .value();
 });
 
 </script>
