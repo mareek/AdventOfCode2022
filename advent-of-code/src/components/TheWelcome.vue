@@ -3,6 +3,7 @@ import day1 from "./Day1.vue";
 import day2 from "./Day2.vue";
 import day3 from "./Day3.vue";
 import day4 from "./Day4.vue";
+import day5 from "./Day5.vue";
 </script>
 
 <template>
@@ -11,5 +12,6 @@ import day4 from "./Day4.vue";
     <li><day2/></li>
     <li><day3/></li>
     <li><day4/></li>
+    <li><day5/></li>
   </ul>
 </template>
