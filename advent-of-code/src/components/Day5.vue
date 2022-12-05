@@ -4,37 +4,43 @@ import _ from "lodash";
 
 const day = 5;
 
-async function GetInput(): Promise<string[]> {
-    const response = await fetch(`day${day}/input.txt`);
+async function GetInput(fileName: string): Promise<string[]> {
+    const response = await fetch(`day${day}/${fileName}`);
     const result = await response.text();
     return result.split("\n").filter(l => !!l.length);
 }
 
 const input = ref<string[]>();
-onMounted(async () => input.value = await GetInput());
+const initialState = ref<string[]>();
+onMounted(async () => {
+    input.value = await GetInput("input.txt");
+    initialState.value = await GetInput("initial-state.txt");
+});
 
-/*
-                [B] [L]     [J]    
-            [B] [Q] [R]     [D] [T]
-            [G] [H] [H] [M] [N] [F]
-        [J] [N] [D] [F] [J] [H] [B]
-    [Q] [F] [W] [S] [V] [N] [F] [N]
-[W] [N] [H] [M] [L] [B] [R] [T] [Q]
-[L] [T] [C] [R] [R] [J] [W] [Z] [L]
-[S] [J] [S] [T] [T] [M] [D] [B] [H]
- 1   2   3   4   5   6   7   8   9  */
+function parseInitialState(initialState: string[]): string[][] {
+    function enumerateLineValues(line: string): string[] {
+        const result: string[] = [];
+        for (let i = 1; i < line.length; i += 4) {
+            result.push(line[i]);
+        }
+        return result;
+    }
 
-const getInitialStack = () => [
-    ["S", "L", "W"],
-    ["J", "T", "N", "Q",],
-    ["S", "C", "H", "F", "J"],
-    ["T", "R", "M", "W", "N", "G", "B"],
-    ["T", "R", "L", "S", "D", "H", "Q", "B"],
-    ["M", "J", "B", "V", "F", "H", "R", "L"],
-    ["D", "W", "R", "N", "J", "M"],
-    ["B", "Z", "T", "F", "H", "N", "D", "J"],
-    ["H", "L", "Q", "N", "B", "F", "T"],
-];
+    const stackValues = initialState.slice(0, initialState.length - 1).map(enumerateLineValues);
+    const stackCount = _.max(stackValues.map(v => v.length))!;
+    const stacks: string[][] = [];
+    for (let stackIndex = 0; stackIndex < stackCount; stackIndex++) {
+        const stack: string[] = [];
+        for (let i = stackValues.length - 1; i >= 0; i--) {
+            const value = stackValues[i][stackIndex];
+            if (value !== " ")
+                stack.push(value);
+        }
+        stacks.push(stack);
+    }
+
+    return stacks;
+}
 
 interface moveCommand {
     count: number,
@@ -60,38 +66,43 @@ const allCommands = computed(() => {
 });
 
 function applyCommand(stacks: string[][], command: moveCommand) {
+    const originStack = stacks[command.origin - 1];
+    const destinationStack = stacks[command.destination - 1];
+
     for (let i = 0; i < command.count; i++) {
-        const crate = stacks[command.origin - 1].pop() ?? "";
-        stacks[command.destination - 1].push(crate);
+        destinationStack.push(originStack.pop()!);
     }
 }
 
 function applyAdvancedCommand(stacks: string[][], command: moveCommand) {
     const originStack = stacks[command.origin - 1];
-    const movingStack = originStack.slice(originStack.length - command.count);
-    for (let i = 0; i < movingStack.length; i++) {
-        const crate = movingStack[i];
-        stacks[command.destination - 1].push(crate);
+    const destinationStack = stacks[command.destination - 1];
+
+    const movingStack: string[] = [];
+    for (let i = 0; i < command.count; i++) {
+        movingStack.push(originStack.pop()!);
     }
 
-    stacks[command.origin - 1] = originStack.slice(0, originStack.length - command.count);
+    for (let i = 0; i < command.count; i++) {
+        destinationStack.push(movingStack.pop()!);
+    }
 }
 
 const part1 = computed(() => {
-    if (!input.value)
-        return 0;
+    if (!input.value || !initialState.value)
+        return "";
 
-    const stacks = getInitialStack();
+    const stacks = parseInitialState(initialState.value);
     allCommands.value.forEach(command => applyCommand(stacks, command));
     const result = stacks.map(s => s.length ? s[s.length - 1] : " ").join("");
     return result;
 });
 
 const part2 = computed(() => {
-    if (!input.value)
-        return 0;
+    if (!input.value || !initialState.value)
+        return "";
 
-    const stacks = getInitialStack();
+    const stacks = parseInitialState(initialState.value);
     allCommands.value.forEach(command => applyAdvancedCommand(stacks, command));
     const result = stacks.map(s => s.length ? s[s.length - 1] : " ").join("");
     return result;

@@ -4,14 +4,14 @@ import _ from "lodash";
 
 const day = 0;
 
-async function GetInput(): Promise<string[]> {
-    const response = await fetch(`day${day}/input.txt`);
+async function GetInput(fileName: string): Promise<string[]> {
+    const response = await fetch(`day${day}/${fileName}`);
     const result = await response.text();
     return result.split("\n").filter(l => !!l.length);
 }
 
 const input = ref<string[]>();
-onMounted(async () => input.value = await GetInput());
+onMounted(async () => input.value = await GetInput("input.txt"));
 
 const part1 = computed(() => {
     if (!input.value)
