@@ -11,7 +11,6 @@ import TheWelcome from "./components/TheWelcome.vue";
 <style scoped>
 main {
   width: 100%;
-  background: pink;
   display: flex;
   justify-content: center;
 }

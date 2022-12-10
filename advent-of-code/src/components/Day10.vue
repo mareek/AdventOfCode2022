@@ -94,12 +94,14 @@ const part2 = computed(() => {
 </script>
 
 <template>
-    <span>Day {{ day }} - Part 1: {{ part1 }} | Part 2:</span>
+    <span>Day {{ day }} - Part 1: {{ part1 }} | Part 2: </span>
     <pre>{{ part2 }}</pre>
 </template>
 
 <style scoped>
 pre {
-    line-height: 75%;
+    display: inline-block;
+    line-height: 60%;
+    vertical-align: middle;
 }
 </style>
