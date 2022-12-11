@@ -87,7 +87,6 @@ const part2 = computed(() => {
         return 0;
 
     const registerValues = getRegisterValues(input.value);
-    debugRegister(registerValues);
     return drawScreen(registerValues).join("\n");
 });
 
