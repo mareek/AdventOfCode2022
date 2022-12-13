@@ -10,6 +10,7 @@ import day8 from "./Day8.vue";
 import day9 from "./Day9.vue";
 import day10 from "./Day10.vue";
 import day11 from "./Day11.vue";
+import day12 from "./Day12.vue";
 </script>
 
 <template>
@@ -25,5 +26,6 @@ import day11 from "./Day11.vue";
     <li><day9/></li>
     <li><day10/></li>
     <li><day11/></li>
+    <li><day12/></li>
   </ul>
 </template>
