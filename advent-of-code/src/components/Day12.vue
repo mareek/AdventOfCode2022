@@ -4,6 +4,10 @@ import _ from "lodash";
 
 const day = 12;
 
+const disablePart1 = true;
+const disablePart2 = true;
+const showMap = !(disablePart1 && disablePart2);
+
 async function GetInput(fileName: string): Promise<string[]> {
     const response = await fetch(`day${day}/${fileName}`);
     const result = await response.text();
@@ -222,14 +226,16 @@ const part1 = computed(() => {
     if (!input.value)
         return 0;
 
+    if (disablePart1)
+        return "Computation too slow";
+
     const map = parseMap(input.value);
-    return "Computation too slow";
     drawMap(map);
-    
+
     console.time("Dijkstra");
     const shortestPath = computeShortestPath(map, map.start)!;
     console.timeLog("Dijkstra");
-    
+
     drawPath(shortestPath);
 
     return shortestPath?.length ?? 0;
@@ -241,7 +247,8 @@ const part2 = computed(() => {
 
     const map = parseMap(input.value);
 
-    return "Computation too slow";
+    if (disablePart2)
+        return "Computation too slow";
 
     const candidates: point[] = [];
     for (const row of map.points) {
@@ -269,7 +276,7 @@ const part2 = computed(() => {
 
 <template>
     <span>Day {{ day }} - Part 1: {{ part1 }} | Part 2: {{ part2 }}</span>
-    <div style="display: none;">
+    <div v-if="showMap">
         <canvas id="day-twelve-canvas" width="1320" height="410"></canvas>
     </div>
 </template>
