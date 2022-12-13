@@ -119,7 +119,6 @@ function getElevation(char: string): number {
 }
 
 function drawMap(map: map) {
-    const sizeFactor = 10;
     const canvasContext = canvasElement.value.getContext("2d");
 
     for (let y = 0; y < map.points.length; y++) {
@@ -127,10 +126,18 @@ function drawMap(map: map) {
         for (let x = 0; x < row.length; x++) {
             const point = row[x];
             const color = getColor(point);
-            canvasContext.fillStyle = color;
-            canvasContext.fillRect(x * sizeFactor, y * sizeFactor, sizeFactor, sizeFactor);
+            drawPoint(canvasContext, color, x, y);
         }
     }
+
+    drawPoint(canvasContext, "chartreuse", map.start.x, map.start.y);
+    drawPoint(canvasContext, "crimson", map.end.x, map.end.y);
+}
+
+function drawPoint(canvasContext: any, color: string, x: number, y: number) {
+    const sizeFactor = 10;
+    canvasContext.fillStyle = color;
+    canvasContext.fillRect(x * sizeFactor, y * sizeFactor, sizeFactor, sizeFactor);
 }
 
 function getColor(point: point) {
@@ -139,12 +146,13 @@ function getColor(point: point) {
 }
 
 function drawPath(points: point[]) {
-    const sizeFactor = 10;
     const canvasContext = canvasElement.value.getContext("2d");
     for (const point of points) {
-        canvasContext.fillStyle = "orangered";
-        canvasContext.fillRect(point.x * sizeFactor, point.y * sizeFactor, sizeFactor, sizeFactor);
+        drawPoint(canvasContext, "orange", point.x, point.y);
     }
+
+    const lastPoint = points[points.length - 1];
+    drawPoint(canvasContext, "crimson", lastPoint.x, lastPoint.y);
 }
 
 function computeShortestPath(map: map, startingPoint: point, abortDistance: number = Number.MAX_SAFE_INTEGER): point[] | undefined {
@@ -215,10 +223,14 @@ const part1 = computed(() => {
         return 0;
 
     const map = parseMap(input.value);
-
+    return "Computation too slow";
+    drawMap(map);
+    
+    console.time("Dijkstra");
     const shortestPath = computeShortestPath(map, map.start)!;
-    //drawMap(map);
-    //drawPath(shortestPath);
+    console.timeLog("Dijkstra");
+    
+    drawPath(shortestPath);
 
     return shortestPath?.length ?? 0;
 });
@@ -229,7 +241,8 @@ const part2 = computed(() => {
 
     const map = parseMap(input.value);
 
-    return 0; //too slow to compute
+    return "Computation too slow";
+
     const candidates: point[] = [];
     for (const row of map.points) {
         for (const point of row) {
@@ -247,7 +260,7 @@ const part2 = computed(() => {
         }
     }
 
-    //drawPath(selectedPath);
+    drawPath(selectedPath);
 
     return selectedPath.length;
 });
