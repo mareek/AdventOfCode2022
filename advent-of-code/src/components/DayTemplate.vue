@@ -7,7 +7,7 @@ const day = 0;
 async function GetInput(fileName: string): Promise<string[]> {
     const response = await fetch(`day${day}/${fileName}`);
     const result = await response.text();
-    return result.split("\n").filter(l => !!l.length);
+    return result.replace("\r", "").split("\n").filter(l => !!l.length);
 }
 
 const input = ref<string[]>();
@@ -17,22 +17,15 @@ const part1 = computed(() => {
     if (!input.value)
         return 0;
 
-    return _.chain(input.value)
-        .map(l => 0)
-        .sum()
-        .value();
+    return 0;
 });
 
 const part2 = computed(() => {
     if (!input.value)
         return 0;
 
-    return _.chain(input.value)
-        .map(l => 0)
-        .sum()
-        .value();
+    return 0;
 });
-
 </script>
 
 <template>
