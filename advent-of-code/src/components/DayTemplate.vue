@@ -11,20 +11,32 @@ async function GetInput(fileName: string): Promise<string[]> {
 }
 
 const input = ref<string[]>();
-onMounted(async () => input.value = await GetInput("input.txt"));
+onMounted(async () => input.value = await GetInput("testInput.txt"));
 
 const part1 = computed(() => {
     if (!input.value)
         return 0;
 
-    return 0;
+    const logLabel = `Day ${day} - Part 1`;
+    console.time(logLabel);
+    // Your code goes here
+    const result = "not implemented yet";
+    console.timeLog(logLabel);
+    console.timeEnd(logLabel);
+    return result;
 });
 
 const part2 = computed(() => {
     if (!input.value)
         return 0;
 
-    return 0;
+        const logLabel = `Day ${day} - Part 2`;
+    console.time(logLabel);
+    // Your code goes here
+    const result = "not implemented yet";
+    console.timeLog(logLabel);
+    console.timeEnd(logLabel);
+    return result;
 });
 </script>
 
