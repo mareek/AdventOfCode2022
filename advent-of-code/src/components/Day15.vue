@@ -12,7 +12,7 @@ async function GetInput(fileName: string): Promise<string[]> {
 }
 
 const input = ref<string[]>();
-onMounted(async () => input.value = await GetInput("input.txt"));
+onMounted(async () => input.value = await GetInput("testInput.txt"));
 
 class sensor {
     readonly position: point;
@@ -89,21 +89,16 @@ function getSensorOuterLimit(sensor: sensor): point[] {
     return result;
 }
 
-
 const caveMap = ref<string>("");
 
 function computePart1(strInput: string[]) {
-    return "Computation too slow";
-
     const sensors = strInput.map(parseSensor);
-    return countFilledSlotOnLine(sensors, 2000000);
+    return countFilledSlotOnLine(sensors, 10);
 }
 
 function computePart2(strInput: string[]) {
-    return "Computation too slow";
-    
     const sensors = strInput.map(parseSensor);
-    const blindSpot = findBlindSpot(sensors, 4000000);
+    const blindSpot = findBlindSpot(sensors, 20);
     return 4000000 * blindSpot.x + blindSpot.y
 }
 
@@ -114,7 +109,6 @@ function computedBoilerplate(part: number, partComputation: (strinput: string[])
     const logLabel = `Day ${day} - Part ${part}`;
     console.time(logLabel);
     const result = partComputation(input.value);
-    console.timeLog(logLabel);
     console.timeEnd(logLabel);
     return result;
 }

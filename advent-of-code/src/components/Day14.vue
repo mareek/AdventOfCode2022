@@ -11,7 +11,7 @@ async function GetInput(fileName: string): Promise<string[]> {
 }
 
 const input = ref<string[]>();
-onMounted(async () => input.value = await GetInput("input.txt"));
+onMounted(async () => input.value = await GetInput("testInput.txt"));
 
 interface point {
     x: number,
@@ -159,7 +159,6 @@ const part1 = computed(() => {
 
     console.time(`Day ${day} - Part 1`);
     let sandDroped = simulateSandDrop(input.value, false);
-    console.timeLog(`Day ${day} - Part 1`);
     console.timeEnd(`Day ${day} - Part 1`);
     return sandDroped;
 });
@@ -170,7 +169,6 @@ const part2 = computed(() => {
 
     console.time(`Day ${day} - Part 2`);
     let sandDroped = simulateSandDrop(input.value, true);
-    console.timeLog(`Day ${day} - Part 2`);
     console.timeEnd(`Day ${day} - Part 2`);
     return sandDroped;
 });

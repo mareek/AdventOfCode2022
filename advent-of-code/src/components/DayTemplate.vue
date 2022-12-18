@@ -30,7 +30,6 @@ function computedBoilerplate(part: number, partComputation: (strinput: string[])
     const logLabel = `Day ${day} - Part ${part}`;
     console.time(logLabel);
     const result = partComputation(input.value);
-    console.timeLog(logLabel);
     console.timeEnd(logLabel);
     return result;
 }
